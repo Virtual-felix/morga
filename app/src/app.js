@@ -1,29 +1,76 @@
-import React from 'react';
-import axios from 'axios';
-import Box from '@material-ui/core/Box';
-import logo from './logo512white.png';
+import React, { useState } from "react";
+import axios from "axios";
+import { Container, Tabs, Tab, Box, Fab } from "@material-ui/core";
+import { Add as AddIcon } from "@material-ui/icons";
 import { ThemeProvider } from "@material-ui/styles";
-import { theme } from './theme';
 import "typeface-roboto";
 
+import { getCustomTheme } from "./theme";
+import Navigation from "./component/navigation";
+import List from "component/list";
+
 function App() {
-  axios.get(process.env.REACT_APP_API_URL)
-    .then(res => {
+  const [darkMode, setDarkMode] = useState(true);
+  const theme = getCustomTheme(darkMode);
+
+  const switchDarkMode = (mode) => {
+    setDarkMode(mode);
+  };
+
+  axios
+    .get(process.env.REACT_APP_API_URL)
+    .then((res) => {
       console.log(res);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 
   return (
     <ThemeProvider theme={theme}>
-      <Box bgcolor="#f5f7f8" minHeight="100vh" textAlign="center" fontFamily="roboto">
-        <Box>
-          <img src={logo} alt="logo" />
-        </Box>
-        <Box>
-          Hello Phoenix
-      </Box>
+      <Box
+        fontFamily="roboto"
+        minHeight="100vh"
+        bgcolor={theme.palette.background.default}
+      >
+        <Navigation darkMode={darkMode} switchDarkMode={switchDarkMode} />
+        <Container>
+          <Box
+            position="relative"
+            top={theme.spacing(10)}
+            bgcolor={theme.palette.background.paper}
+            minHeight={theme.spacing(62)}
+            minWidth="100%"
+          >
+            {/* Tabs */}
+            <Box bgcolor={theme.palette.background.paper}>
+              <Tabs
+                value={0}
+                indicatorColor="primary"
+                textColor="primary"
+                centered
+              >
+                <Tab label="Item One" />
+                <Tab label="Item Two" />
+                <Tab label="Item Three" />
+              </Tabs>
+            </Box>
+
+            {/* List (aka tab content) */}
+            <List />
+
+            {/* Add item */}
+            <Box
+              position="absolute"
+              bottom={theme.spacing(2)}
+              right={theme.spacing(2)}
+            >
+              <Fab color="primary" aria-label="add">
+                <AddIcon />
+              </Fab>
+            </Box>
+          </Box>
+        </Container>
       </Box>
     </ThemeProvider>
   );
