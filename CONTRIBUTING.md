@@ -7,7 +7,7 @@ I'm using this project to learn more about both React and Rust. Don't hesitate t
 
 ## Project board, issues and branches
 
-The project is using the [Project feature from github](https://github.com/features/project-management/). [On this board](https://github.com/Virtual-felix/phoenix/projects/1) you can find the backlog containing most of the future work to do (big picture), all the defined task to perform (detailed) and the work in progress.
+The project is using the [Project feature](https://github.com/features/project-management/) from github. [On this board](https://github.com/Virtual-felix/phoenix/projects/1) you can find the backlog containing most of the future work to do (big picture), all the defined task to perform (detailed) and the work in progress.
 
 The lifetime of a ticket is basically:
 
@@ -34,17 +34,21 @@ Don't be bad.
 First, I kept the generated base from [CRA](https://reactjs.org/docs/create-a-new-react-app.html). I won't explain, it is quite intuitive and you can learn more on the documentation.
 
 All the app code is in the `/src` folder.
+
 The assets are in their own folder `/src/asset` to avoid mixing javascript and non-javascript items. In a context where there would be other people than developpers working on the project, it would also make them more reachable for them.
+
 You will find in `/src/util` all the helper functions that are using among all the components. Lets keep the code DRY (Don’t Repeat Yourself).
 
 Then, the `/src/component` folder. This is the most important part. Every component in the project will have the own directory in this folder. And in each of those directories, you will have a `index.js` file exporting the public parts of those components and as default one the top most main component (and only do this), then the code will be in the other files of the directory. This way, you can import the component using the folder name `src/component/component-name` which make it much better for maintainability (you can refactor/split your code as many time as you want without any changes on the imports).
+
 Furthermore, all the component will have this file structure:
 
 - The state-less component in `component-name-view.js`
 - The container in `component-name-container.js`
 - The global state component in `component-name-redux.js`
 - Local specific helpers in `component-name-util.js`
-  It makes is easier for the components to evolve from state-less to more complex ones without moving code from a file to another one and lose track of the code in the version control system.
+
+It makes it easier for the components to evolve from state-less to more complex ones without moving code from a file to another one and lose track of the code in the version control system.
 
 Most of those rules can be nested (capped at depth of 1). It means that if you have a component which is strictly coupled to another one as a child, you can nest it in the parent component folder and follow all the abose rules.
 
